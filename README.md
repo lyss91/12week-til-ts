@@ -31,4 +31,25 @@
   : `npm i -g typescript`
 - typescript compiler 버전 확인
   : `tsc -v`
-# 12week-til-ts
+
+## 5. 샘플 작업해 보기
+
+- `src 폴더` 생성
+- `src/index.ts` 파일 생성
+
+```ts
+console.log("Hello World");
+const a: number = 10;
+```
+
+- 위에 작성한 ts 파일을 js 파일로 변환
+  : `tsc src/index.ts`
+- 실행 결과 (index.js 파일 생성 됨)
+
+```js
+console.log("Hello World");
+var a = 10;
+```
+
+- node 에서 실행하기
+  : `node src/index.js`
