@@ -1,2 +1,6 @@
-console.log("Hello World");
-var a = 10;
+import { hi, bye } from "./sample";
+const go = () => {
+  console.log("go");
+};
+hi();
+bye();
