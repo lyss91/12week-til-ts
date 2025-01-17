@@ -1,5 +1,5 @@
-export const hi = () => {
-  console.log("hi");
+export const hi = (name: string) => {
+  console.log(name + "hi");
 };
 
 export const bye = () => {
