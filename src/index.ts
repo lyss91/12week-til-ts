@@ -1,21 +1,14 @@
-// 비동기 함수
-async function fetchGetTodo(): Promise<void> {
-  const res = await fetch("주소");
-}
-async function fetchGetTodoOne(): Promise<string> {
-  const res = await fetch("주소");
-  return "hello";
-}
-async function fetchPostTodo(): Promise<boolean> {
-  const res = await fetch("주소");
-  return true;
-}
+let value: void;
+let go: undefined = undefined;
+// void 는 undefined 의 수퍼 타입이다.
+value = go;
+value = undefined;
+// any 나 unknown 이 아니므로
+value = 5; // 오류
 
-type Todo = {
-  id: number;
-  title: string;
-};
-async function fetchSortTodo(): Promise<Todo> {
-  const res = await fetch("주소");
-  return { id: 1, title: "안녕" };
+function say(_count: number): string {
+  return "hello" + _count;
 }
+let result: void;
+// string 은 void 의 서브 타입이 아니라서 호환안됨.
+result = say(1000); // 오류
