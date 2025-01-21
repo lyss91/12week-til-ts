@@ -595,4 +595,138 @@ const result4 = processUnknown({ id: 2 });
 
 ## never
 
+- "절대로 일어나면 안됩니다" 라는 표현입니다. (불가능한 상황)
+- "절대로 끝나지 않을 거야" 라는 표현입니다. (무한루프)
+- 절대 발생하지 않는 상태를 표현할 때
+- 항상 에러를 표현
+- 끝나지 던지는 함수 않는 함수
+- 불가능한 생태 처리 등에 활용
+- 타입 안전성을 높이고, 예외처리를 명확하게 하기 위한 용도
+
+```ts
+function go(): never {
+  while (true) {}
+}
+function say(): never {
+  throw new Error("error");
+}
+```
+
+```ts
+type Animal = "cat" | "dog" | "fish";
+let a: Animal = "cat";
+a = "dog";
+a = "fish";
+a = "horse"; // 오류
+
+// Anmal 에 타입으로 정의한 것 이외에는 절대 값이 존재하면 안됨
+// 위의 문장을 어노테이션으로 타입을 표현하고 싶다.
+function say(who: Animal): string {
+  if (who === "cat") {
+    return "고양이";
+  } else if (who === "dog") {
+    return "강아지";
+  } else if (who === "fish") {
+    return "물고기";
+  } else {
+    // 이곳까지 코드가 흘러오면 안됩니다.
+    const no: never = who;
+    throw new Error(`타입에 정의안되었어요. ${no}`);
+  }
+}
+
+say("horse"); // 오류가 있어도 js 는 만들어 집니다.
+```
+
+- 아무 값도 반환하지 않아요를 정확히 명시하고 싶은 경우
+
+```ts
+function throwError(message: string): never {
+  throw new Error(message);
+}
+throwError("프로그램 중지");
+```
+
+- 무한루프 함수
+  : 절대 끝나지 않는 함수의 리턴을 명확히 표현하고 싶다.
+
+```ts
+function loop(): never {
+  while (true) {
+    console.log("안끝난다. 영원히");
+  }
+}
+loop();
+```
+
+- 언제 사용할까?
+  - switch, if~else 등 모든 경우를 처리한 이후
+  - 항상 에러를 던져야 하는 함수
+  - 무한 루프로 절대 종료되지 않는 함수
+  - 명확한 코드 흐름 안내
+
 ## void
+
+- `아무것도 없어요` 라는 의미
+- 주로 `함수의 리턴 타입`으로 사용합니다.
+
+```ts
+function func1(): string {
+  return "hello";
+}
+// 함수에서 리턴하는 값의 종류는 비어있어요.
+function func2(): void {
+  console.log("안녕");
+}
+// 값이 없다는 표현은 어떤게 있나요?
+// 함수 반환 return 이 없으면 기본이 void 입니다.
+function func3(): void {}
+
+// 아래 함수는 return undefined 작성
+// 명시적으로 undefined 를 리턴해야 한다면 작성해줘야 함.
+function func4(): undefined {
+  return undefined;
+}
+
+// 명시적으로 return 후 값이 없는 함수라면
+// void 를 리턴합니다.
+function func5(): void {
+  return;
+}
+
+// 명시적으로 null 을 리턴하고 싶다면
+// null 을 리턴해야 한다.
+function func6(): null {}
+function func7(): null {
+  return null;
+}
+```
+
+- void 를 사용하는 곳
+  - 아무것도 반환하지 않을 때
+  - 반환값이 필요없는 콜백 함수는
+  - 비동기 함수에 리턴되는 값이 없음을 나타낼때
+
+```ts
+// 비동기 함수
+async function fetchGetTodo(): Promise<void> {
+  const res = await fetch("주소");
+}
+async function fetchGetTodoOne(): Promise<string> {
+  const res = await fetch("주소");
+  return "hello";
+}
+async function fetchPostTodo(): Promise<boolean> {
+  const res = await fetch("주소");
+  return true;
+}
+
+type Todo = {
+  id: number;
+  title: string;
+};
+async function fetchSortTodo(): Promise<Todo> {
+  const res = await fetch("주소");
+  return { id: 1, title: "안녕" };
+}
+```
